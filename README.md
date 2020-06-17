@@ -22,10 +22,15 @@ Steps:
 git clone
 ```
 
-2. Populate configuration file using the example below. You will need to provide your login credentials, url of the server, model name, and list of folders that will be monitored by the script.
+2. Populate configuration file
 
-You will need to train a model beforehand. When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will allow the uploaded images and results to persist in a dataset.
-<img src="https://imgur.com/awqhK7J" />
+You will need to train an inference model beforehand. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
+
+After training a model, it will also need to be deployed. When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will persist the uploaded images and results in a dataset.
+<img src="https://i.imgur.com/p9nYS9m.png" />
+
+
+After a model is trained and deployed, populate a configuration file using the example below. You will need to provide your login credentials, url of the server, model name, and list of folders that will be monitored by the script.
 
 ```
 {
@@ -86,9 +91,9 @@ Object Detection
 - Objects detected (delimited by `|`)
 - Confidence score of each object
 
-```
+<!-- ```
 https://<url>/uploads/temp/4c436fa6-188f-4fdf-8e0f-9e46b79b0b1a/35c5a552-3e63-4e56-9b63-d06e8893c94f.png,Object Detection,643-365-681-493|790-544-1057-859,Green|Red,0.963|0.999
-```
+``` -->
 
 Classification
 - URL
