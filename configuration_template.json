@@ -1,0 +1,21 @@
+{
+  "credentials": {
+    "endpoint": "<url>",
+    "port": "<port>",
+    "username": "<username>",
+    "password": "<password>"
+  },
+  "threshold": {
+    "upload": 1
+  },
+  "category_threshold": {
+    "Dampers_Damaged": 3
+  },
+  "time": 5,
+  "model": {
+    "name": "<model_name>"
+  },
+  "folders": [
+    "<path to images>"
+  ]
+}
