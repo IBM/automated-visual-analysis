@@ -19,7 +19,7 @@ Steps:
 
 1. Clone the repo
 ```
-git clone
+git clone https://github.com/IBM/automated-visual-analysis
 ```
 
 2. Populate configuration file
