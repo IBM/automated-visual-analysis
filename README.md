@@ -17,6 +17,14 @@ In this Code Pattern, we provide a long-running script that can monitor a folder
 
 - Python 3
 - IBM Visual Insights
+You will need to train an inference model within your Visual Insights instance before running this script. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
+
+After training a model, it will also need to be [deployed](https://www.ibm.com/support/knowledgecenter/SSRU69_1.2.0/base/vision_deploy.html). When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will persist the uploaded images and results in a dataset.
+
+<img src="https://i.imgur.com/p9nYS9m.png" />
+
+
+
 <!-- - Maximo Visual Inspector -->
 
 ## Steps:
@@ -33,11 +41,6 @@ git clone https://github.com/IBM/automated-visual-analysis
 
 ## 2. Populate configuration file
 
-You will need to train an inference model beforehand. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
-
-After training a model, it will also need to be deployed. When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will persist the uploaded images and results in a dataset.
-
-<img src="https://i.imgur.com/p9nYS9m.png" />
 
 
 After a model is trained and deployed, populate a configuration file using the example below. You will need to provide your login credentials, url of the server, model name, and list of folders that will be monitored by the script.
