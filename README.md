@@ -2,7 +2,8 @@ In this Code Pattern, we provide a long-running script that can monitor a folder
 
 <img src="https://i.imgur.com/ikvffft.png"  />
 
-Flow:
+### Flow:
+
 1. User inserts storage card from drone/camera
 2. User drags images to specified folder.
 3. Script recognizes new images have been added to folder
@@ -12,13 +13,13 @@ Flow:
 7. CSV file is loaded into web application
 8. User is able to view and filter inference info in application
 
-Prerequisites:
+### Prerequisites:
 
 - Python 3
 - IBM Visual Insights
 <!-- - Maximo Visual Inspector -->
 
-Steps:
+## Steps:
 1. [Clone the repo](#1-clone-the-repo)
 2. [Populate configuration file with service credentials / model name](#2-populate-configuration-file)
 3. [Test script](#3-test-script)
@@ -35,6 +36,7 @@ git clone https://github.com/IBM/automated-visual-analysis
 You will need to train an inference model beforehand. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
 
 After training a model, it will also need to be deployed. When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will persist the uploaded images and results in a dataset.
+
 <img src="https://i.imgur.com/p9nYS9m.png" />
 
 
@@ -112,7 +114,7 @@ Classification
 
 
 ## 4. Load CSV in dashboard (Optional)
-After storing the results in a CSV file, we can then view them in a previous pattern.
+After storing the results in a CSV file, we can then view them in a dashboard. The codebase for this dashboard is provided in a previous pattern.
 
 ```
 git clone -b drone https://github.com/IBM/visual-insights-table
@@ -131,7 +133,6 @@ Drag and drop your CSV file to the zone, and each inferred image should show up 
 <img src="https://i.imgur.com/Q5mNvLh.png" />
 
 
-Clicking on a thumbnail image will show an enlarged image with the classified zones highlighted. Object detection results
-
+Clicking on a thumbnail image will show an enlarged image with the classified zones highlighted. Object detection results are indicated by bounding boxes. Classification results are represented through a heatmap overlay.
 
 <img src="https://i.imgur.com/D9cIgMl.png" />
