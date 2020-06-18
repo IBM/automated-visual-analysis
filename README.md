@@ -1,14 +1,22 @@
 In this Code Pattern, we provide a long-running script that can monitor a folder for changes. As images are copied to the folder, they will then be automatically uploaded to be analyzed by a visual recognition service. This solution is primarily geared towards utility and communications companies that use drones to inspect their equipment. As the inspection footage is copied from the drone storage, the videos are split up into frames, and each individual frame is analyzed. The recognized class/object (ex. bad insulator, broken couplings, missing nuts), confidence score, heatmap, and video timestamp can then be stored in a CSV file. This CSV file is compatible with our previous code pattern [here](https://github.com/IBM/visual-insights-table), which renders the analysis results in a dashboard.
 
+<img src="https://i.imgur.com/ikvffft.png"  />
+
 Flow:
-1. User inserts storage card from drone/camera and drags images to specified folder.
-2. Script recognizes new images and posts them to Maximo Visual Inspection APIs
-3. Analysis results are written to a CSV file
+1. User inserts storage card from drone/camera
+2. User drags images to specified folder.
+3. Script recognizes new images have been added to folder
+4. Script posts new Images to IBM Visual Insights <!-- Maximo Visual Inspection APIs -->
+5. Analysis results are returned to Python
+6. Results are parsed and written to a CSV file
+7. CSV file is loaded into web application
+8. User is able to view and filter inference info in application
 
 Prerequisites:
-Python 3
-Maximo Visual Inspector
 
+- Python 3
+- IBM Visual Insights
+<!-- - Maximo Visual Inspector -->
 
 Steps:
 1. [Clone the repo](#1-clone-the-repo)
@@ -17,12 +25,12 @@ Steps:
 4. [Load CSV in webapp (optional)](#4-load-csv)
 
 
-1. Clone the repo
+## 1. Clone the repo
 ```
 git clone https://github.com/IBM/automated-visual-analysis
 ```
 
-2. Populate configuration file
+## 2. Populate configuration file
 
 You will need to train an inference model beforehand. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
 
@@ -55,7 +63,7 @@ After a model is trained and deployed, populate a configuration file using the e
 
 Once you have filled out the fields, save the file as `configuration.json`.
 
-3. Start the script.
+## 3. Start the script
 
 ```
 python3 infer_script.py
@@ -103,7 +111,7 @@ Classification
 - Confidence score
 
 
-4. Load CSV in dashboard (Optional)
+## 4. Load CSV in dashboard (Optional)
 After storing the results in a CSV file, we can then view them in a previous pattern.
 
 ```
@@ -121,3 +129,9 @@ Then, click "Import CSV file"
 Drag and drop your CSV file to the zone, and each inferred image should show up in the table like so
 
 <img src="https://i.imgur.com/Q5mNvLh.png" />
+
+
+Clicking on a thumbnail image will show an enlarged image with the classified zones highlighted. Object detection results
+
+
+<img src="https://i.imgur.com/D9cIgMl.png" />
