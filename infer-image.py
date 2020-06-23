@@ -264,8 +264,8 @@ class Event(LoggingEventHandler):
             # filename = "test_video.mp4"
             # name, image_type = filename.split('.')
             fps = 1
-            frame_output_dir = "/tmp/script_output/"
-            ffmpeg.input("/tmp/script_monitor/" + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
+            frame_output_dir = config['folders'][0]
+            ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
             frames = glob.glob(frame_output_dir + name + '*.png')
             for frame in frames:
                 files_to_upload.append(frame)
@@ -282,7 +282,7 @@ class Event(LoggingEventHandler):
         print(f'upload: {file_upload_count} / {upload_threshold}')
         print(f'training: {file_train_count} / {training_threshold}')
         print(f'total_file_count: {total_file_count}')
-        if file_upload_count == upload_threshold:
+        if file_upload_count > upload_threshold:
             # upload_in_progress = True
             start_upload_timer()
 
