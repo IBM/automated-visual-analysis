@@ -36,7 +36,7 @@ blue_text = '\033[94m'
 f = open('./configuration.json')
 config = json.load(f)
 upload_threshold = config['threshold']['upload']
-training_threshold = config['threshold']['train']
+
 # dataset_name = config['dataset']['name']
 
 if 'action' in config['model'].keys():
@@ -55,7 +55,7 @@ def get_token(config):
         'password': config['credentials']['password']
     }
     url = config['credentials']['endpoint'] + '/api/tokens' # + config['credentials']['port']
-    print(f'analyzing images')
+    print(f'requesting token')
     headers = {'content-type': 'application/json'}
     r = requests.post(url, json=body, headers=headers, verify=False)
     if r.status_code == 200:
@@ -65,7 +65,8 @@ def get_token(config):
         print(f"setting token {token}")
         return token
     else:
-        print(f"failure getting token HTTP {r.status_code}")
+        print(f"{red_text}failure getting token HTTP {r.status_code}. Please correct credentials in config file.")
+        exit()
 
 models = []
 def get_models():
@@ -90,9 +91,6 @@ def infer_images():
     }
     csv_file = open('out.csv', 'w+')
     csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    # print(files_to_upload)
-    # print(headers)
-    # files = [('file', open(f, 'rb').read() ) for f in files_to_upload ]
     url = config['credentials']['endpoint'] + 'api/dlapis/' + model_id #config['model']['name']
     results = []
     csv_headers = ['ImageURL', "AnalysisType", "Heatmap/Boxes", 'Class', 'Score', 'Time', "ID"] #
@@ -104,7 +102,7 @@ def infer_images():
             # "files": files[1],
             "containHeatMap": "true"
         }
-        print(f"posting to url {url}")
+        print(f"{green_text} posting to url {url}")
         r = requests.post(url, files=[('files', open(f, 'rb'))], data=body, headers=headers, verify=False)
         # r = requests.post(url, files=files, headers=headers, verify=False)
         if r.status_code == 200:
@@ -232,8 +230,14 @@ files_to_upload = []
 
 
 models = get_models()
-model = [ m for m in models if (m['name'] == config['model']['name']) and (m['deployed'] == 1 ) ][0]
-model_id = model['_id']
+try:
+    selected_model = [ m for m in models if (m['name'] == config['model']['name']) and (m['deployed'] == 1 ) ]
+    model = selected_model[0]
+    model_id = model['_id']
+except:
+    print(f"{red_text}Model {config['model']['name']} not found. Please correct name/id in config file and restart script. {white_text}")
+    exit()
+
 # infer_images()
 
 
@@ -263,6 +267,8 @@ class Event(LoggingEventHandler):
             # split into frames
             # filename = "test_video.mp4"
             # name, image_type = filename.split('.')
+            # TODO, this is mostly only necessary for classification. Object detection *should* do the split already
+            print(f"{green_text} splitting mp4 file {white_text}")
             fps = 1
             frame_output_dir = config['folders'][0]
             ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
@@ -278,9 +284,7 @@ class Event(LoggingEventHandler):
             total_file_count += 1
             file_upload_count += 1
             file_train_count += 1
-
         print(f'upload: {file_upload_count} / {upload_threshold}')
-        print(f'training: {file_train_count} / {training_threshold}')
         print(f'total_file_count: {total_file_count}')
         if file_upload_count > upload_threshold:
             # upload_in_progress = True
