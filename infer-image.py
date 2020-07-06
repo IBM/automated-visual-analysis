@@ -260,7 +260,7 @@ class Event(LoggingEventHandler):
         if '.' not in filename:
             return
         name, image_type = filename.split('.')
-        if image_type not in ['jpg', 'png', 'mp4']:
+        if image_type.lower() not in ['jpg', 'jpeg', 'png', 'mp4']:
             print(f"skipping unsupported media type {image_type}")
             return
         if image_type in ['mp4']:
