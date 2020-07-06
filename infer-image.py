@@ -102,24 +102,26 @@ def infer_images():
             # "files": files[1],
             "containHeatMap": "true"
         }
-        print(f"{green_text} posting to url {url}")
+        print(f"{green_text} posting to url {url}{white_text}")
         r = requests.post(url, files=[('files', open(f, 'rb'))], data=body, headers=headers, verify=False)
         # r = requests.post(url, files=files, headers=headers, verify=False)
         if r.status_code == 200:
             res = r.json()
             results.append(res)
-            print(res)
+            print(res['classified'])
             # res['classified']
             result = res['classified']
-            if (isinstance(res['classified'], dict)):
+            # if (isinstance(res['classified'], dict)):
+            if 'heatmap' in res.keys():
+                # classification
                 print("inferring classification model")
-                cls = list(res['classified'].keys())[0]
-                score = res['classified'][cls]
-                print(f)
+                if isinstance(res['classified'], dict):
+                    cls = list(res['classified'].keys())[0]
+                    score = res['classified'][cls]
+                else:
+                    cls = res['classified'][0]['name']
+                    score = res['classified'][0]['confidence']
                 print(res['classified'])
-                # print(res)
-                # print(f"{res['heatmap'][0:5]}, {cls}, {score}")
-                # url_pre = res['imageUrl'].split('/')
                 url_post = res['imageUrl'].split('/uploads')[1]
                 image_url = base_url + '/uploads/' + url_post
                 row = [
@@ -142,7 +144,7 @@ def infer_images():
                         seconds = f"0{seconds}"
                     row.append(f"{minutes}:{seconds}")
                 # row.append()
-            elif (isinstance(result, list)):
+            else: #(isinstance(result, list)):
                 # {'webAPIId': '4c436fa6-188f-4fdf-8e0f-9e46b79b0b1a', 'imageUrl': 'http://vision-v120-prod-service:9080/vision-v120-prod-api/uploads/temp/4c436fa6-188f-4fdf-8e0f-9e46b79b0b1a/4c492b15-5ef2-4c16-9081-dfb5392cfbcd.png', 'imageMd5': 'b3dcfd4ac6757a6e688d84e91585ab16', 'classified': [{'confidence': 0.963, 'ymax': 681, 'label': 'Green', 'image_id': '4c492b15-5ef2-4c16-9081-dfb5392cfbcd.png', 'xmax': 643, 'xmin': 365, 'ymin': 493}, {'confidence': 0.999, 'ymax': 1057, 'label': 'Red', 'image_id': '4c492b15-5ef2-4c16-9081-dfb5392cfbcd.png', 'xmax': 790, 'xmin': 544, 'ymin': 859}], 'result': 'success'}
                 print("inferring obj model")
                 # object detect
@@ -152,6 +154,7 @@ def infer_images():
                 coords = ""
                 scores = ""
                 for obj in result:
+                    # if 'label' in obj.keys():
                     classes += obj['label'] + '|'
                     coords += f"{obj['xmax']}-{obj['xmin']}-{obj['ymax']}-{obj['ymin']}" + '|'
                     scores += str(obj['confidence']) + '|'
@@ -186,9 +189,9 @@ def infer_images():
                     print("writing row to csv file")
                     csv_writer.writerow(row)
                 '''
-            else:
+            # else:
                 # row.append(None)
-                print("unexpected response")
+                # print("unexpected response")
                 # row = [None]
             print("writing csv file")
             csv_writer.writerow(row)
@@ -269,9 +272,10 @@ class Event(LoggingEventHandler):
             # name, image_type = filename.split('.')
             # TODO, this is mostly only necessary for classification. Object detection *should* do the split already
             print(f"{green_text} splitting mp4 file {white_text}")
-            fps = 1
             frame_output_dir = config['folders'][0]
-            ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
+            fps = float(1 / float(config['frame_interval']))
+            # ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
+            ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps).output( frame_output_dir + name + "_frame_%d.png").run()
             frames = glob.glob(frame_output_dir + name + '*.png')
             for frame in frames:
                 files_to_upload.append(frame)

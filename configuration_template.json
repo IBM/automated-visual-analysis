@@ -5,11 +5,9 @@
     "username": "<username>",
     "password": "<password>"
   },
+  "frame_interval": "<select frame every x seconds of video>",
   "threshold": {
     "upload": 1
-  },
-  "category_threshold": {
-    "Dampers_Damaged": 3
   },
   "time": 5,
   "model": {

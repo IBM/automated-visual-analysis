@@ -15,11 +15,19 @@ In this Code Pattern, we provide a long-running script that can monitor a folder
 
 ### Prerequisites:
 
-- Python 3
+- Python 3 + pip
 - IBM Visual Insights
-You will need to train an inference model within your Visual Insights instance before running this script. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
 
-After training a model, it will also need to be [deployed](https://www.ibm.com/support/knowledgecenter/SSRU69_1.2.0/base/vision_deploy.html). When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section. This will persist the uploaded images and results in a dataset.
+Install the ffmpeg-python package
+```
+python3 -m pip install ffmpeg-python
+```
+
+To analyze images, you will need to train an inference model within your Visual Insights instance before running this script. If training a classification model, we recommend using the pattern [here](https://github.com/IBM/visual-insights-data-sync). The referenced pattern uses a similar script to train a model as images are added to folders.
+
+After training a model, it will also need to be [deployed](https://www.ibm.com/support/knowledgecenter/SSRU69_1.2.0/base/vision_deploy.html).
+
+By default, inference results will be temporarily stored in the Visual Insights server. We can instead persist the uploaded images and inference results in a dataset. When deploying the model, be sure to check the "Advanced Options" in the upper right, and select "Save" in the "Inference Results" section.
 
 <img src="https://i.imgur.com/p9nYS9m.png" />
 
@@ -40,8 +48,6 @@ git clone https://github.com/IBM/automated-visual-analysis
 ```
 
 ## 2. Populate configuration file
-
-
 
 After a model is trained and deployed, populate a configuration file using the example below. You will need to provide your login credentials, url of the server, model name, and list of folders that will be monitored by the script.
 
@@ -121,7 +127,8 @@ After storing the results in a CSV file, we can then view them in a dashboard. T
 
 ```
 git clone -b drone https://github.com/IBM/visual-insights-table
-cd visual-insights-table/frontend
+cd visual-insights-table
+cd frontend
 npm install
 npm run serve
 ```
