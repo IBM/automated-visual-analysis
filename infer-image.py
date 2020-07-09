@@ -273,6 +273,8 @@ class Event(LoggingEventHandler):
             # TODO, this is mostly only necessary for classification. Object detection *should* do the split already
             print(f"{green_text} splitting mp4 file {white_text}")
             frame_output_dir = config['folders'][0]
+            if '/' != config['folders'][0][-1]:
+                frame_output_dir += "/"
             fps = float(1 / float(config['frame_interval']))
             # ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps, round='up').output( frame_output_dir + name + "_frame_%d.png").run()
             ffmpeg.input(config['folders'][0] + filename).filter('fps', fps=fps).output( frame_output_dir + name + "_frame_%d.png").run()
