@@ -7,7 +7,7 @@ In this Code Pattern, we provide a long-running script that can monitor a folder
 1. User inserts storage card from drone/camera
 2. User drags images to specified folder.
 3. Script recognizes new images have been added to folder
-4. Script posts new Images to IBM Visual Insights <!-- Maximo Visual Inspection APIs -->
+4. Script posts new images to Maximo Visual Inspection api <!-- Maximo Visual Inspection APIs -->
 5. Analysis results are returned to Python
 6. Results are parsed and written to a CSV file
 7. CSV file is loaded into web application
@@ -34,6 +34,7 @@ By default, inference results will be temporarily stored in the Visual Insights 
 
 
 <!-- - Maximo Visual Inspector -->
+
 
 ## Steps:
 1. [Clone the repo](#1-clone-the-repo)
